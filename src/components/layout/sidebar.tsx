@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Users, UserPlus, Target, Calendar, Megaphone, Settings, LogOut, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Users, UserPlus, Target, Calendar, Megaphone, Settings, LogOut, Sparkles, Bell } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ const menuItems = [
   { title: 'Oportunidades', href: '/crm/oportunidades', icon: Target },
   { title: 'Actividades', href: '/crm/actividades', icon: Calendar },
   { title: 'Campañas', href: '/marketing/campanas', icon: Megaphone },
+  { title: 'Notificaciones', href: '/notificaciones', icon: Bell },
 ];
 
 export function Sidebar() {
