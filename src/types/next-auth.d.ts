@@ -1,6 +1,14 @@
 import { DefaultSession, DefaultUser } from 'next-auth';
 import { JWT, DefaultJWT } from 'next-auth/jwt';
 
+interface Permiso {
+  modulo: string;
+  puede_ver: boolean;
+  puede_crear: boolean;
+  puede_editar: boolean;
+  puede_eliminar: boolean;
+}
+
 declare module 'next-auth' {
   interface Session {
     user: {
@@ -11,6 +19,8 @@ declare module 'next-auth' {
       email: string;
       rol: any;
       sucursal?: string;
+      es_admin?: boolean;
+      permisos?: Permiso[];
     } & DefaultSession['user'];
     accessToken?: string;
   }
@@ -23,6 +33,8 @@ declare module 'next-auth' {
     email: string;
     rol: any;
     sucursal?: string;
+    es_admin?: boolean;
+    permisos?: Permiso[];
     token?: string;
   }
 }
@@ -35,6 +47,8 @@ declare module 'next-auth/jwt' {
     apellido?: string;
     rol: any;
     sucursal?: string;
+    es_admin?: boolean;
+    permisos?: Permiso[];
     accessToken?: string;
   }
 }

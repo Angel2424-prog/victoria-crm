@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Users, UserPlus, Target, Calendar, Megaphone, Settings, LogOut, Sparkles, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, UserPlus, Target, Calendar, Megaphone, Settings, LogOut, Sparkles, Bell, Shield } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -17,15 +17,19 @@ const menuItems = [
   { title: 'Actividades', href: '/crm/actividades', icon: Calendar },
   { title: 'Campañas', href: '/marketing/campanas', icon: Megaphone },
   { title: 'Notificaciones', href: '/notificaciones', icon: Bell },
+  { title: 'Usuarios', href: '/admin/usuarios', icon: Shield, adminOnly: true },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const isAdmin = (session?.user as any)?.es_admin;
 
   const getInitials = (nombre?: string, apellido?: string) => {
     return ((nombre?.charAt(0) || '') + (apellido?.charAt(0) || '')).toUpperCase() || 'U';
   };
+
+  const filteredMenuItems = menuItems.filter(item => !(item as any).adminOnly || isAdmin);
 
   return (
     <div className="flex h-screen w-64 flex-col bg-slate-900 text-white">
@@ -35,7 +39,7 @@ export function Sidebar() {
 
       <nav className="flex-1 overflow-y-auto p-4">
         <ul className="space-y-1">
-          {menuItems.map((item) => (
+          {filteredMenuItems.map((item) => (
             <li key={item.title}>
               <Link
                 href={item.href}

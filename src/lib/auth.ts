@@ -40,6 +40,8 @@ export const authOptions: NextAuthOptions = {
             email: data.user.email,
             rol: data.user.rol,
             sucursal: data.user.sucursal,
+            es_admin: data.user.es_admin,
+            permisos: data.user.permisos,
             token: data.token
           };
         } catch (error: any) {
@@ -57,6 +59,8 @@ export const authOptions: NextAuthOptions = {
         token.apellido = user.apellido;
         token.rol = user.rol;
         token.sucursal = user.sucursal;
+        token.es_admin = user.es_admin;
+        token.permisos = user.permisos;
         token.accessToken = user.token;
       }
       return token;
@@ -69,6 +73,8 @@ export const authOptions: NextAuthOptions = {
         session.user.apellido = token.apellido as string;
         session.user.rol = token.rol as any;
         session.user.sucursal = token.sucursal as string;
+        session.user.es_admin = token.es_admin as boolean;
+        session.user.permisos = token.permisos as any[];
         (session as any).accessToken = token.accessToken;
       }
       return session;
