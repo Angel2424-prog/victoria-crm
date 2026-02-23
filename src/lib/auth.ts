@@ -3,6 +3,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
+console.log('[AUTH] API_URL configurada:', API_URL);
+console.log('[AUTH] NEXTAUTH_SECRET existe:', !!process.env.NEXTAUTH_SECRET);
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -12,11 +15,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Contraseña', type: 'password' }
       },
       async authorize(credentials) {
+        console.log('[AUTH] authorize() llamado con login:', credentials?.login);
+        
         if (!credentials?.login || !credentials?.password) {
+          console.log('[AUTH] Credenciales vacías');
           throw new Error('Usuario y contraseña son requeridos');
         }
 
         try {
+          console.log('[AUTH] Haciendo fetch a:', `${API_URL}/auth/login`);
           const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -27,10 +34,14 @@ export const authOptions: NextAuthOptions = {
           });
 
           const data = await response.json();
+          console.log('[AUTH] Respuesta del backend:', response.status, data.success ? 'OK' : data.error);
 
           if (!response.ok || !data.success) {
+            console.log('[AUTH] Login fallido:', data.error);
             throw new Error(data.error || 'Credenciales inválidas');
           }
+          
+          console.log('[AUTH] Login exitoso para usuario:', data.user?.login);
 
           return {
             id: data.user.id,
