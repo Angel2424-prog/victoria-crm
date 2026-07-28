@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Users, UserPlus, Target, Calendar, Megaphone, Settings, LogOut, Sparkles, Bell, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, UserPlus, Target, Calendar, Megaphone, LogOut, Sparkles, Bell, Shield, X } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,11 @@ const menuItems = [
   { title: 'Usuarios', href: '/admin/usuarios', icon: Shield, adminOnly: true },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+export function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const isAdmin = (session?.user as any)?.es_admin;
@@ -33,8 +37,18 @@ export function Sidebar() {
 
   return (
     <div className="flex h-screen w-64 flex-col bg-slate-900 text-white">
-      <div className="flex h-16 items-center justify-center border-b border-slate-700">
+      <div className="flex h-16 items-center justify-between border-b border-slate-700 px-4">
         <h1 className="text-xl font-bold">CRM Seguros</h1>
+        {/* Botón cerrar solo en móvil */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="lg:hidden text-slate-400 hover:text-white transition-colors"
+            aria-label="Cerrar menú"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
       <nav className="flex-1 overflow-y-auto p-4">
@@ -43,6 +57,7 @@ export function Sidebar() {
             <li key={item.title}>
               <Link
                 href={item.href}
+                onClick={onClose}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   pathname === item.href
