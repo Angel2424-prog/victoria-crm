@@ -325,11 +325,8 @@ npm start        # Iniciar build
 ---
 
 ## Credenciales de Prueba
-- **Usuario:** admin
-- **Contraseña:** Admin123!
 
----
-
+Las credenciales del entorno de desarrollo se generan con el script de seed (npm run seed) y se definen mediante variables de entorno. No se publican en este repositorio.
 ## Características Destacadas
 
 1. **Dashboard interactivo** con KPIs en tiempo real
